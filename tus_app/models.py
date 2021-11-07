@@ -8,7 +8,6 @@ from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSign
 
 BaseModel = declarative_base()
 
-
 # secret key to create and verify tokens
 secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
 
@@ -30,3 +29,46 @@ class User(BaseModel):
     def __repr__(self):
         return f"User('{self.username}','{self.firstname}','{self.lastname}','{self.email}','{self.phone_number}')"
 
+
+class CV(BaseModel):
+    __tablename__ = 'CV'
+
+    id = Column(Integer, primary_key=True)
+    text = Column(String(2000), unique=False, nullable=False)
+    rating = Column(float, unique=False, nullable=True)
+
+    user_id = Column(Integer, ForeignKey('User.id'), unique=True, nullable=False)
+
+    user = relationship(User)
+
+    def __repr__(self):
+        return f"CV('{self.text}','{self.rating}')"
+
+
+class Subject(BaseModel):
+    __tablename__ = 'Subject'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(
+        Enum('English', 'Germany', 'History', 'Astronomy', 'Math', 'Chemistry', 'Physics', 'Biology', 'Literature'),
+        unique=False, nullable=True)
+
+    cv_id = Column(Integer, ForeignKey('CV.id'), unique=True, nullable=False)
+    cv_user_id = Column(Integer, ForeignKey('CV.User.id'), unique=False, nullable=False)
+
+    cv = relationship(CV)
+    cv_user = relationship(User)
+
+    def __repr__(self):
+        return f"Subject('{self.name}')"
+
+
+class Review(BaseModel):
+    __tablename__ = 'Review'
+
+    id = Column(Integer, primary_key=True)
+    text = Column(String(1000), unique=False, nullable=False)
+    mark = Column(Integer, unique=False, nullable=False, default=0)
+    user_id=Column(Integer,ForeignKey('User.id'),unique=False,nullable=False)
+    def __repr__(self):
+        return f"Review('{self.text}','{self.mark}')"
