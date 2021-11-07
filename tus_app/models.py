@@ -1,7 +1,7 @@
 import random
 import string
 from passlib.apps import custom_app_context as pwd_context
-from sqlalchemy import Column, Integer, String, ForeignKey, BLOB, Enum
+from sqlalchemy import Column, Integer, String, ForeignKey, BLOB, Enum, FLOAT
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
@@ -27,7 +27,7 @@ class User(BaseModel):
     role = Column(Enum('Tutor', 'Admin', 'Client'), unique=False, nullable=False, default='Client')
 
     def __repr__(self):
-        return f"User('{self.username}','{self.firstname}','{self.lastname}','{self.email}','{self.phone_number}')"
+        return f"User('{self.username}','{self.first_name}','{self.last_name}','{self.email}','{self.phone}')"
 
 
 class CV(BaseModel):
@@ -35,9 +35,9 @@ class CV(BaseModel):
 
     id = Column(Integer, primary_key=True)
     text = Column(String(2000), unique=False, nullable=False)
-    rating = Column(float, unique=False, nullable=True)
+    rating = Column(FLOAT, unique=False, nullable=True)
 
-    user_id = Column(Integer, ForeignKey('User.id'), unique=True, nullable=False)
+    user_id = Column(Integer, ForeignKey("User.id"), unique=True, nullable=False)
 
     user = relationship(User)
 
@@ -53,8 +53,8 @@ class Subject(BaseModel):
         Enum('English', 'Germany', 'History', 'Astronomy', 'Math', 'Chemistry', 'Physics', 'Biology', 'Literature'),
         unique=False, nullable=True)
 
-    cv_id = Column(Integer, ForeignKey('CV.id'), unique=True, nullable=False)
-    cv_user_id = Column(Integer, ForeignKey('CV.User.id'), unique=False, nullable=False)
+    cv_id = Column(Integer, ForeignKey("CV.id"), unique=True, nullable=False)
+    cv_user_id = Column(Integer, ForeignKey("User.id"), unique=False, nullable=False)
 
     cv = relationship(CV)
     cv_user = relationship(User)
@@ -69,6 +69,8 @@ class Review(BaseModel):
     id = Column(Integer, primary_key=True)
     text = Column(String(1000), unique=False, nullable=False)
     mark = Column(Integer, unique=False, nullable=False, default=0)
-    user_id=Column(Integer,ForeignKey('User.id'),unique=False,nullable=False)
+    user_id = Column(Integer, ForeignKey("User.id"), unique=False, nullable=False)
+    user = relationship(User)
+
     def __repr__(self):
         return f"Review('{self.text}','{self.mark}')"
