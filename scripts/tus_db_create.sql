@@ -21,7 +21,7 @@ USE `tus_db` ;
 -- Table `tus_db`.`User`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tus_db`.`User` (
-  `id` INT UNSIGNED NOT NULL,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(55) NOT NULL,
   `last_name` VARCHAR(55) NOT NULL,
   `location` VARCHAR(55) NULL,
@@ -40,7 +40,7 @@ ENGINE = InnoDB;
 -- Table `tus_db`.`CV`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tus_db`.`CV` (
-  `id` INT UNSIGNED NOT NULL,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `text` VARCHAR(2000) NOT NULL,
   `rating` FLOAT NULL,
   `user_id` INT UNSIGNED NOT NULL,
@@ -60,7 +60,7 @@ ENGINE = InnoDB;
 -- Table `tus_db`.`Subject`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tus_db`.`Subject` (
-  `id` INT UNSIGNED NOT NULL,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` ENUM('English', 'German', 'Chemistry', 'Math', 'Biology', 'History', 'Physics', 'Astronomy', 'Literature') NOT NULL,
   `cv_id` INT UNSIGNED NOT NULL,
   `cv_user_id` INT UNSIGNED NOT NULL,
@@ -79,7 +79,7 @@ ENGINE = InnoDB;
 -- Table `tus_db`.`Review`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tus_db`.`Review` (
-  `id` INT UNSIGNED NOT NULL,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `text` VARCHAR(1000) NOT NULL,
   `mark` INT NOT NULL DEFAULT 0,
   `user_id` INT UNSIGNED NOT NULL,

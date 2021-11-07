@@ -14,7 +14,7 @@ secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x
 
 
 class User(BaseModel):
-    __tablename__ = 'user'
+    __tablename__ = 'User'
 
     id = Column(Integer, primary_key=True)
     first_name = Column(String(55), unique=False, nullable=False)
@@ -24,7 +24,7 @@ class User(BaseModel):
     password_hash = Column(String(300), unique=False, nullable=False)
     email = Column(String(60), unique=True, nullable=False)
     phone = Column(String(15), unique=True, nullable=True)
-    photo = Column(BLOB, unique=False, nullable=True, default="..")  # TODO: create default blob object
+    photo = Column(BLOB, unique=False, nullable=True)  # TODO: create default blob object
     role = Column(Enum('Tutor', 'Admin', 'Client'), unique=False, nullable=False, default='Client')
 
     def __repr__(self):
